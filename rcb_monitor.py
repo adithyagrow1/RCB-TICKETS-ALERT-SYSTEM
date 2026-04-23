@@ -52,7 +52,7 @@ log = logging.getLogger(__name__)
 # The page to watch – BookMyShow / RCB official / Paytm Insider, etc.
 TARGET_URL = os.getenv(
     "TARGET_URL",
-    "https://www.bookmyshow.com/sports/royal-challengers-bengaluru"
+    "https://shop.royalchallengers.com/ticket"
 )
 
 # How often to check (seconds). 120 = every 2 minutes
