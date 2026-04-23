@@ -23,6 +23,7 @@ TELEGRAM_CHAT_ID   = os.getenv("TELEGRAM_CHAT_ID", "6496519631")
 # Yesterday at 4:00 PM
 
 yesterday = datetime.now() - timedelta(days=1)
+
 alert_time = yesterday.replace(hour=16, minute=0, second=0, microsecond=0)
 formatted_time = alert_time.strftime("%d %b %Y, %I:%M %p")  # e.g. 22 Apr 2026, 04:00 PM
 
