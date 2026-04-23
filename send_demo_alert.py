@@ -15,6 +15,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "8543257717:AAE_kdST6wlNcdZsd6o6Q6Y3PriIVLUTYss")
 TELEGRAM_CHAT_ID   = os.getenv("TELEGRAM_CHAT_ID", "6496519631")
 
