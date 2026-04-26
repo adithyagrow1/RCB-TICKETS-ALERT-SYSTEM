@@ -1,11 +1,5 @@
 """
-RCB Demo Alert Sender
-=====================
-Sends a fake "tickets live" notification to Telegram
-with yesterday's 4:00 PM timestamp — perfect for a LinkedIn demo screenshot.
-
-Usage:
-    python send_demo_alert.py
+RCB Demo Alert Sender (Fixed)
 """
 
 import os
@@ -13,48 +7,37 @@ import requests
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 
-
 load_dotenv()
 
-
-
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "8543257717:AAE_kdST6wlNcdZsd6o6Q6Y3PriIVLUTYss")
-
-
-TELEGRAM_CHAT_ID   = os.getenv("TELEGRAM_CHAT_ID", "6496519631")
+TELEGRAM_CHAT_ID   = os.getenv("TELEGRAM_CHAT_ID", "@IplRCBticket")
 
 # Yesterday at 4:00 PM
-
 yesterday = datetime.now() - timedelta(days=1)
-
-
 alert_time = yesterday.replace(hour=16, minute=0, second=0, microsecond=0)
+formatted_time = alert_time.strftime("%d %b %Y, %I:%M %p")
 
-formatted_time = alert_time.strftime("%d %b %Y, %I:%M %p")  # e.g. 22 Apr 2026, 04:00 PM
+message = (
+    "🚨 RCB TICKETS ARE LIVE! 🏏\n\n"
+    "📅 Match: Royal Challengers Bengaluru vs Punjab Kings\n"
+    "🏟 Venue: M. Chinnaswamy Stadium, Bengaluru\n"
+    f"🕓 Detected at: {formatted_time}\n\n"
+    "🎟 Book Now: https://shop.royalchallengers.com/ticket\n\n"
+    "⚡ Monitored by RCB Ticket Alert Bot\n"
+    "Powered by Claude AI | Auto-detected ticket availability"
+)
 
-message = f"""🚨 *RCB TICKETS ARE LIVE\!* 🏏
-
-📅 *Match:* Royal Challengers Bengaluru vs Punjab Kings
-🏟️ *Venue:* M\. Chinnaswamy Stadium, Bengaluru
-🕓 *Detected at:* {formatted_time}
-
-🎟️ [Buy now → RCB TICKETS](https://shop.royalchallengers.com/ticket)
-
-⚡ *Monitored by RCB Ticket Alert Bot*
-_Powered by Claude AI • Auto\-detected ticket availability_"""
-
-def send_telegram(message: str):
+def send_telegram(msg):
     url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
     resp = requests.post(
         url,
         json={
             "chat_id": TELEGRAM_CHAT_ID,
-            "text": message,
-            "parse_mode": "MarkdownV2",
-            "disable_web_page_preview": False
+            "text": msg,
         },
         timeout=10,
     )
+    print("Telegram response:", resp.json())
     resp.raise_for_status()
     return resp.json()
 
@@ -66,6 +49,6 @@ if __name__ == "__main__":
     result = send_telegram(message)
 
     if result.get("ok"):
-        print("✅ Demo alert sent successfully! Check your Telegram.")
+        print("✅ Demo alert sent! Check your Telegram.")
     else:
         print("❌ Something went wrong:", result)
